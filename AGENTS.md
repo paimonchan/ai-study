@@ -55,6 +55,13 @@ When doing a deep-dive session, structure the output as:
 - Pastikan perbedaan dimensi (d_model vs vocab_size, vektor vs token) selalu jelas
 - Commit with descriptive messages: `study: add [topic] Q&A` atau `study: update [topic] — klarifikasi [aspect]`
 
+## Common Misses (pelajari dari kesalahan sebelumnya)
+
+- ❌ **Renumber section dengan edit tool** — edit tool match oldString → newString secara eksak. Kalau oldString cuma header (`### 6. ...` sampai `### 8. ...`) tanpa konten di antaranya, konten ikut terhapus. **Solusi:** pakai `bash` + `sed` untuk renumber, atau pastikan oldString mencakup konten lengkap.
+- ❌ **Jangan campur "add section" dengan "renumber"** dalam 1 edit — lakukan 2 step terpisah.
+- ❌ **Cek `git diff` sebelum commit** — biasakan lihat perubahan yang tidak terduga.
+- ❌ **Select-String case-insensitive** kadang gagal di PowerShell untuk pattern tertentu. Alternatif: `Get-Content file | Select-String "pattern"` atau `bash` + `grep`.
+
 ## Quick Reference — Key Concepts
 
 ### Local Source Code Paths
