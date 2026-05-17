@@ -77,19 +77,80 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
 - [ ] **Orthrus**: diffusion view on frozen auto-regressive model (paper 12 Mei)
 
 ### 8. Infrastruktur & Build
+- [ ] **CUDA toolkit update**: https://developer.nvidia.com/cuda-downloads
+  - Cek versi terbaru (saat ini 13.1)
+  - Perhatikan: ada bug CUDA 13.2 yang pengaruhi low-bit inference!
+- [ ] **NVIDIA driver update**: Game Ready / Studio driver
+  - WDDM stability, TDR fixes
+- [ ] **CMake / Ninja / MSVC**: update toolchain
+- [ ] **Windows Update**: KB yang pengaruhi GPU performa
+
 ### 9. Benchmark Landscape
+- [ ] **SWE-bench Verified**: https://www.swebench.com/ — SOTA coding
+- [ ] **Terminal-Bench 2.0**: leaderboard model baru
+- [ ] **LiveCodeBench**: coding benchmark terkini
+- [ ] **Aider Polyglot / LLM Leaderboard**: coding comparison
+- [ ] **Artificial Analysis**: https://artificialanalysis.ai — model comparison
+
 ### 10. Quantization
+- [ ] **MagicQuant v2.0**: hybrid mixed GGUF — pipeline baru
+- [ ] **Unsloth Dynamic 2.0**: update quantization benchmark
+- [ ] **imatrix**: importance matrix calibration — tooling update
+- [ ] **NVFP4**: Blackwell native FP4 support di llama.cpp/vLLM
+- [ ] **TurboQuant status**: Google Research, ICLR 2026 — official release Q2?
+
 ### 11. Agent & Framework
+- [ ] **OpenCode**: https://github.com/anthropics/claude-code — update versi
+  - Fitur baru: tool calling, MCP, agent mode
+- [ ] **vLLM**: https://github.com/vllm-project/vllm/releases
+  - v0.21.0 (15 Mei) — Gemma4 MTP support!
+  - Release notes: model baru, performance
+- [ ] **Ollama**: update versi — support model baru?
+  - Catatan: Gemma 4 di Ollama masih bermasalah
+- [ ] **LM Studio**: update — GGUF loader, UI improvements
+- [ ] **MCP (Model Context Protocol)**: server baru, tool baru
+  - https://github.com/modelcontextprotocol/servers
+
 ### 12. Forks & Custom Build
+- [ ] **`ikawrakow/ik_llama.cpp`**: https://github.com/ikawrakow/ik_llama.cpp
+  - Commits terbaru — Gemma 4 MTP, TurboQuant
+  - Bedanya dengan upstream: `-mtp` vs `--spec-type draft-mtp`
+- [ ] **`atomic-llama-cpp-turboquant`**: fork dengan TurboQuant
+- [ ] **`am17an/mtp-clean`**: sudah merge ke upstream, tidak perlu lagi
 
 ---
 
 ## 🔵 Monthly (1-2 jam) — Evaluasi
 
 ### 13. Model Evaluation
+- [ ] **Download model baru** yang promising dan muat 12GB
+- [ ] **Test speed**: bandingkan t/s dengan Qwen 35B baseline (48 t/s)
+- [ ] **Test quality**: HumanEval subset (20 soal, ~10 menit)
+- [ ] **Test VRAM usage**: nvidia-smi sebelum/sesudah
+- [ ] **Test MTP compatibility**: `--spec-type draft-mtp` berfungsi?
+
 ### 14. Benchmark Ulang
+- [ ] **HumanEval full** (164 soal) — kalau ada perubahan signifikan
+- [ ] **Bandingkan**: model baru vs Qwen 35B IQ2_M MTP
+- [ ] **Catat hasil**: di `benchmarks/human-eval/results/`
+
 ### 15. Infra Maintenance
+- [ ] **Cleanup disk**: hapus model GGUF yang tidak dipakai
+  - `E:\AI\LLM\models-external\qwen36-mtp\`
+- [ ] **Cleanup temp files**: `%TEMP%` — installer leftovers, cache
+- [ ] **Rebuild llama.cpp** dari upstream master
+  - Pull + rebuild: `ninja llama-server`
+  - Copy binary ke `E:\AI\LLM\llama.cpp\`
+- [ ] **Cek health**: RAM, VRAM, disk space
+  - `nvidia-smi`, `Get-CimInstance Win32_OperatingSystem`
+- [ ] **Update study repo**: tambah Q&A baru, update checklist
+
 ### 16. Docs & Knowledge
+- [ ] **Update README.md**: tabel model, speed, benchmark
+- [ ] **Update AGENTS.md**: common misses, critical changes
+- [ ] **Update `llama-help.bat`**: model list, argumen
+- [ ] **Push all repos**: LLM + study
+
 ### 17. Security & Licensing
 
 ### 18. AI Safety & Ethics
