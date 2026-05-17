@@ -102,6 +102,14 @@ Generate token satu per satu. Lambat karena cuma 1 token per forward pass.
 
 **Ingat:** 1 decode = 1 step = 1 forward pass target model. MTP draft juga forward pass, tapi hanya 1 layer — TIDAK disebut "decode".
 
+### Siapa yang menentukan jumlah decode?
+1. **`max_tokens`** — batas dari pengguna
+2. **EOS token** (`<|im_end|>`) — model sendiri merasa selesai
+3. **Stop sequence** — dari pengguna
+4. **Panjang prompt** — harus diproses dulu semua (prefill)
+
+Model tidak pernah tahu berapa langkah yang dibutuhkan. Setiap langkah cuma nebak 1 token ke depan, terus berulang sampai nemu token selesai.
+
 ## Speculative Decoding
 
 Teknik mempercepat decode dengan cara:
