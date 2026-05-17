@@ -117,12 +117,22 @@ Standar: 40 layer/token → mahal
 MTP:     40 layer + (1 layer × MTP_depth) → murah
 ```
 
+### Penting: 1 decode ≠ MTP draft
+
+| Istilah | Arti |
+|---|---|
+| 1 step | 1 forward pass (bisa target atau MTP) |
+| 1 decode | 1 forward pass **target model** (40 layer) → **MTP draft BUKAN decode** |
+| 1 forward pass | 1 kali proses data lewat model — target 40 layer, MTP 1 layer |
+
+Jadi kalau MTP menghasilkan 3 token: secara teknis cuma **2 decode** (target: generate + verify) + **2 draft MTP** (bukan decode).
+
 ### MTP Draft Tetap Forward Pass
 Draft MTP tetap lewat forward pass — tapi modelnya **1 layer**, bukan 40 layer target.
 
 ```
-Target forward pass: input → L1 → L2 → ... → L40 → hidden_state → token
-MTP forward pass:   hidden_state → [MTP block 1 layer] → h_mtp → lm_head_mtp → token
+Target forward pass: input → L1 → L2 → ... → L40 → hidden_state → token (1 decode)
+MTP forward pass:   hidden_state → [MTP block 1 layer] → h_mtp → lm_head_mtp → token (BUKAN decode)
 ```
 
 Bobot MTP sudah ada di file GGUF yang sama, bukan model terpisah.

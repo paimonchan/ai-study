@@ -71,6 +71,9 @@ Potongan kata yang model baca sebagai angka. Tokenizer ubah teks → token IDs.
 ### Forward Pass
 Satu kali proses data dari input ke output melalui semua layer neural network.
 
+### Decode (= Step = Forward Pass Target)
+1 decode = 1 step = 1 forward pass target model (40 layer). MTP draft BUKAN decode — hanya forward pass 1 layer.
+
 ### Hidden State
 Vektor float yang merupakan "pemikiran abstrak" model di suatu layer. Bukan probabilitas. Dimensinya d_model (bukan jumlah token).
 

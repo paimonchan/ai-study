@@ -100,6 +100,8 @@ Memproses prompt awal — semua token diproses paralel dalam 1 forward pass. Cep
 ### Decode
 Generate token satu per satu. Lambat karena cuma 1 token per forward pass.
 
+**Ingat:** 1 decode = 1 step = 1 forward pass target model. MTP draft juga forward pass, tapi hanya 1 layer — TIDAK disebut "decode".
+
 ## Speculative Decoding
 
 Teknik mempercepat decode dengan cara:
