@@ -26,18 +26,39 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
   - Filter: `label:performance`, `label:enhancement`
   - Keyword: speculative, quantization, flash attention
 
-### 3. Community — Signal
+### 3. General AI News — Semua Model
+- [ ] **TechCrunch AI**: https://techcrunch.com/category/artificial-intelligence/ — headline hari ini
+- [ ] **VentureBeat AI**: https://venturebeat.com/category/ai/ — industri & funding
+- [ ] **The Verge AI**: https://www.theverge.com/ai-artificial-intelligence — consumer AI
+- [ ] **ArsTechnica AI**: https://arstechnica.com/ai/ — teknis & analysis
+- [ ] **Google AI Blog**: https://ai.googleblog.com/ — research dari Google
+- [ ] **Meta AI Blog**: https://ai.meta.com/blog/ — research dari Meta
+- [ ] **Microsoft Research**: https://www.microsoft.com/en-us/research/topic/artificial-intelligence/ — research dari Microsoft
+
+### 4. Community — Signal
 - [ ] **r/LocalLLaMA**: https://reddit.com/r/LocalLLaMA
   - Trending posts 24h — cari: MTP, quant, "12GB", "5070", "MoE", GGUF
   - Benchmark posts dari user hardware mirip
+- [ ] **r/MachineLearning**: https://reddit.com/r/MachineLearning — general ML discussion
+  - Cari: "[D] Research", "[P] Project", "[R] Resource"
 - [ ] **Hacker News / Show HN**: 
-  - Cari: "Show HN: ... model", "GGUF", "llama.cpp", "inference", "local AI"
+  - Cari: "Show HN: ... model", "GGUF", "llama.cpp", "inference", "local AI", "AI agent"
+- [ ] **Lobsters**: https://lobste.rs/t/ai — AI tag, komunitas dev
+- [ ] **Twitter/X**: follow akun kunci (Karpathy, Ggerganov, Unsloth, dll)
 
 ---
 
 ## 🟡 Weekly (20-30 menit) — Penting
 
-### 4. Model Releases Tracker
+### 5. General AI News Roundup
+- [ ] **The Batch by Andrew Ng**: https://www.deeplearning.ai/the-batch/ — newsletter mingguan
+- [ ] **Import AI by Jack Clark**: https://importai.substack.com/ — AI industry analysis
+- [ ] **TLDR AI**: https://tldr.tech/ai — daily digest (cek arsip minggu ini)
+- [ ] **Last Week in AI**: https://lastweekin.ai/ — weekly roundup
+- [ ] **AI Index Report**: https://hai.stanford.edu/ai-index — Stanford HAI (cek update)
+- [ ] **State of AI**: https://www.stateof.ai/ — annual report (cek rilis baru)
+
+### 6. Model Releases Tracker
 - [ ] **LLM Stats**: https://llm-stats.com/llm-updates — last 30 days
 - [ ] **WhatLLM**: https://whatllm.org/blog/ — artikel bulanan
 - [ ] **HF Daily Papers**: https://huggingface.co/papers — model baru + paper
@@ -48,89 +69,91 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
   - `MoE`, `mixture of experts`, `routing`
   - `linear attention`, `state space model`, `Mamba`
 
-### 5. Speculative Decoding
+### 7. Speculative Decoding
 - [ ] **MTP updates**: ada improvement baru? (acceptance rate, speed)
 - [ ] **EAGLE / EAGLE-3**: support llama.cpp? (vLLM sudah)
 - [ ] **DFlash**: diffusion-style speculative decoding — masuk llama.cpp?
 - [ ] **Self-speculative**: n-gram / lookup decoding improvement
 - [ ] **Orthrus**: diffusion view on frozen auto-regressive model (paper 12 Mei)
 
-### 6. Infrastruktur & Build
-- [ ] **CUDA toolkit update**: https://developer.nvidia.com/cuda-downloads
-  - Cek versi terbaru (saat ini 13.1)
-  - Perhatikan: ada bug CUDA 13.2 yang pengaruhi low-bit inference!
-- [ ] **NVIDIA driver update**: Game Ready / Studio driver
-  - WDDM stability, TDR fixes
-- [ ] **CMake / Ninja / MSVC**: update toolchain
-- [ ] **Windows Update**: KB yang pengaruhi GPU performa
-
-### 7. Benchmark Landscape
-- [ ] **SWE-bench Verified**: https://www.swebench.com/ — SOTA coding
-- [ ] **Terminal-Bench 2.0**: leaderboard model baru
-- [ ] **LiveCodeBench**: coding benchmark terkini
-- [ ] **Aider Polyglot / LLM Leaderboard**: coding comparison
-- [ ] **Artificial Analysis**: https://artificialanalysis.ai — model comparison
-
-### 8. Quantization
-- [ ] **MagicQuant v2.0**: hybrid mixed GGUF — pipeline baru
-- [ ] **Unsloth Dynamic 2.0**: update quantization benchmark
-- [ ] **imatrix**: importance matrix calibration — tooling update
-- [ ] **NVFP4**: Blackwell native FP4 support di llama.cpp/vLLM
-- [ ] **TurboQuant status**: Google Research, ICLR 2026 — official release Q2?
-
-### 9. Agent & Framework
-- [ ] **OpenCode**: https://github.com/anthropics/claude-code — update versi
-  - Fitur baru: tool calling, MCP, agent mode
-- [ ] **vLLM**: https://github.com/vllm-project/vllm/releases
-  - v0.21.0 (15 Mei) — Gemma4 MTP support!
-  - Release notes: model baru, performance
-- [ ] **Ollama**: update versi — support model baru?
-  - Catatan: Gemma 4 di Ollama masih bermasalah
-- [ ] **LM Studio**: update — GGUF loader, UI improvements
-- [ ] **MCP (Model Context Protocol)**: server baru, tool baru
-  - https://github.com/modelcontextprotocol/servers
-
-### 10. Forks & Custom Build
-- [ ] **`ikawrakow/ik_llama.cpp`**: https://github.com/ikawrakow/ik_llama.cpp
-  - Commits terbaru — Gemma 4 MTP, TurboQuant
-  - Bedanya dengan upstream: `-mtp` vs `--spec-type draft-mtp`
-- [ ] **`atomic-llama-cpp-turboquant`**: fork dengan TurboQuant
-- [ ] **`am17an/mtp-clean`**: sudah merge ke upstream, tidak perlu lagi
+### 8. Infrastruktur & Build
+### 9. Benchmark Landscape
+### 10. Quantization
+### 11. Agent & Framework
+### 12. Forks & Custom Build
 
 ---
 
 ## 🔵 Monthly (1-2 jam) — Evaluasi
 
-### 11. Model Evaluation
-- [ ] **Download model baru** yang promising dan muat 12GB
-- [ ] **Test speed**: bandingkan t/s dengan Qwen 35B baseline (48 t/s)
-- [ ] **Test quality**: HumanEval subset (20 soal, ~10 menit)
-- [ ] **Test VRAM usage**: nvidia-smi sebelum/sesudah
-- [ ] **Test MTP compatibility**: `--spec-type draft-mtp` berfungsi?
+### 13. Model Evaluation
+### 14. Benchmark Ulang
+### 15. Infra Maintenance
+### 16. Docs & Knowledge
+### 17. Security & Licensing
 
-### 12. Benchmark Ulang
-- [ ] **HumanEval full** (164 soal) — kalau ada perubahan signifikan
-- [ ] **Bandingkan**: model baru vs Qwen 35B IQ2_M MTP
-- [ ] **Catat hasil**: di `benchmarks/human-eval/results/`
+### 18. AI Safety & Ethics
+- [ ] **AI Safety Institute**: https://www.aisi.gov.uk/ — publikasi baru
+- [ ] **Anthropic Safety**: https://www.anthropic.com/research — safety research
+- [ ] **DeepMind Safety**: https://deepmindsafetyresearch.com/ — safety research
+- [ ] **CVE advisories**: cek CVE untuk llama.cpp, CUDA, PyTorch, vLLM
+- [ ] **Model license changes**: cek lisensi model baru — Apache 2.0? MIT? Custom?
+- [ ] **Red-teaming**: laporan baru tentang model vulnerability
 
-### 13. Infra Maintenance
-- [ ] **Cleanup disk**: hapus model GGUF yang tidak dipakai
-  - `E:\AI\LLM\models-external\qwen36-mtp\`
-- [ ] **Cleanup temp files**: `%TEMP%` — installer leftovers, cache
-- [ ] **Rebuild llama.cpp** dari upstream master
-  - Pull + rebuild: `ninja llama-server`
-  - Copy binary ke `E:\AI\LLM\llama.cpp\`
-- [ ] **Cek health**: RAM, VRAM, disk space
-  - `nvidia-smi`, `Get-CimInstance Win32_OperatingSystem`
-- [ ] **Update study repo**: tambah Q&A baru, update checklist
+### 19. AI Policy & Regulation
+- [ ] **EU AI Act**: implementasi, update regulasi
+- [ ] **US Executive Orders**: AI policy, export controls
+- [ ] **China AI regulation**: regulasi model open-source
+- [ ] **Copyright cases**: kasus hukum AI training data
+- [ ] **Export controls**: chip embargo (NVIDIA ke China)
 
-### 14. Docs & Knowledge
-- [ ] **Update README.md**: tabel model, speed, benchmark
-- [ ] **Update AGENTS.md**: common misses, critical changes
-- [ ] **Update `llama-help.bat`**: model list, argumen
-- [ ] **Push all repos**: LLM + study
+### 20. AI in Specific Domains
+- [ ] **Medical AI**: new models for diagnosis, drug discovery
+- [ ] **Scientific AI**: AlphaFold, weather prediction, physics simulation
+- [ ] **Legal AI**: AI for contract analysis, legal research
+- [ ] **Financial AI**: trading models, risk assessment
+- [ ] **Climate AI**: climate modeling, energy optimization
 
-### 15. Security & Licensing
+### 21. Robotics & Embodied AI
+- [ ] **New robotics models**: RT-2, π0, generalist robot models
+- [ ] **Sim-to-real**: simulation advances for robotics
+- [ ] **Humanoid robots**: Figure, Tesla Optimus, Boston Dynamics updates
+- [ ] **Robot foundation models**: models that control robot hardware directly
+
+### 22. AI in Creative Fields
+- [ ] **Image generation**: Stable Diffusion, Flux, Midjourney updates
+- [ ] **Video generation**: Sora, Veo, SANA-WM updates
+- [ ] **Music generation**: new audio models
+- [ ] **Game AI**: procedural generation, NPC behavior models
+
+### 23. AI Industry & Business
+- [ ] **Funding rounds**: startup funding, acquisitions
+- [ ] **IPO news**: AI companies going public
+- [ ] **Pricing changes**: API pricing shifts (OpenAI, Anthropic, Google)
+- [ ] **New entrants**: companies entering AI space
+- [ ] **Open source adoption**: perusahaan yang pindah ke open-source models
+- [ ] **Cloud AI spending**: tren belanja AI di AWS/GCP/Azure
+
+### 24. Open Source Ecosystem Health
+- [ ] **Hugging Face stats**: total models, downloads trend
+- [ ] **GitHub stars**: trending AI repos minggu ini
+- [ ] **PyPI downloads**: popularity transformers, diffusers, dll
+- [ ] **Docker images**: cek new base images for AI
+- [ ] **Dev kits**: NVIDIA Jetson, Arduino AI, Raspberry Pi AI
+
+### 25. AI Education & Learning
+- [ ] **New courses**: DeepLearning.ai, Fast.ai, Hugging Face course updates
+- [ ] **Tutorials**: new practical guides for LLM deployment
+- [ ] **Books**: new AI/ML book releases
+- [ ] **Workshops**: upcoming conferences, webinars
+- [ ] **Datasets**: new benchmark datasets, open training data
+
+### 26. Hardware & Platform — General
+- [ ] **CPU**: AMD/Intel new gen — AVX-512, AMX support
+- [ ] **NPU**: neural processing units — Snapdragon X, Apple Neural Engine
+- [ ] **Cloud GPU**: new instance types (AWS, GCP, Azure)
+- [ ] **Edge AI**: Raspberry Pi AI Kit, NVIDIA Jetson updates
+- [ ] **Storage**: NVMe SSD, RAM, motherboard for AI workstation
 - [ ] **Cek lisensi model baru**: Apache 2.0? MIT? Llama Community?
 - [ ] **Cek advisories**: CVE untuk llama.cpp / CUDA / driver
 - [ ] **Cek perubahan lisensi**: model yang sebelumnya open-source berubah?
