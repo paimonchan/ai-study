@@ -60,8 +60,8 @@ When doing a deep-dive session, structure the output as:
 | llama.cpp source | `E:\AI\LLM\_work\llama.cpp-upstream-src-tmp\` |
 | llama.cpp build | `E:\AI\LLM\_work\llama.cpp-upstream-build-cuda\` |
 | llama-server binary | `E:\AI\LLM\llama.cpp\llama-server.exe` |
-| MTP spec code | `...\common\speculative.cpp` (baris 380) |
-| Server context | `...\tools\server\server-context.cpp` (baris 785-819) |
+| MTP spec code | `E:\AI\LLM\_work\llama.cpp-upstream-src-tmp\common\speculative.cpp` (baris 380) |
+| Server context | `E:\AI\LLM\_work\llama.cpp-upstream-src-tmp\tools\server\server-context.cpp` (baris 785-819) |
 | CUDA toolchain | `E:\AI\LLM\_work\cuda-toolchain\Library\bin` |
 
 ### Token
