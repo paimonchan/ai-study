@@ -41,11 +41,12 @@ When doing a deep-dive session, structure the output as:
 ## Topics Covered So Far
 
 | File | Topics |
-|---|---|---|
-| `ai-basics.md` | Token, forward pass, hidden state, lm_head (bukan otak, di-learn), autoregressive, prefill vs decode, speculative decoding, MTP depth, discount decode |
-| `mtp-basics.md` | MTP architecture, hidden state reuse, verify flow, 2 lm_head, "discount decode", draft accuracy trade-off, MTP depth & diminishing returns |
-| `llamacpp-code.md` | server.cpp structure, MTP state machine, build setup, CUDA toolchain |
-| `inference-engines.md` | Perbandingan engine (llama.cpp, vLLM, SGLang, MLX, TensorRT-LLM), star count, format support, MTP support per engine |
+|---|---|
+| `ai-basics.md` | Token, forward pass, hidden state, lm_head, autoregressive, prefill vs decode, speculative decoding |
+| `mtp-basics.md` | MTP architecture, hidden state vs output, verify flow, 2 lm_head, efficiency, draft acceptance |
+| `llamacpp-code.md` | server.cpp structure, MTP state machine, build setup, CUDA toolchain, MTP spec code |
+| `daily-monitor-checklist.md` | **Daily/weekly/monthly monitoring**: model tracker, llama.cpp releases, community, benchmark landscape, speculative decoding status, quantization, infrastructure, forks, security, red flags, quick commands |
+| `ai-deep-knowledge.md` | **11 sections comprehensive reference**: model architectures, MoE deep dive, quantization levels, speculative decoding methods, KV cache, paper tracker, industry players, build guide, performance tuning, WDDM, benchmarks, OpenCode config, hardware landscape, common mistakes, diagnostics |
 
 ## Maintenance
 - **Update files setiap selesai Q&A session** — review percakapan, tangkap insight baru, perbaiki analogi yang kurang jelas
@@ -65,6 +66,22 @@ When doing a deep-dive session, structure the output as:
 | MTP spec code | `E:\AI\LLM\_work\llama.cpp-upstream-src-tmp\common\speculative.cpp` (baris 380) |
 | Server context | `E:\AI\LLM\_work\llama.cpp-upstream-src-tmp\tools\server\server-context.cpp` (baris 785-819) |
 | CUDA toolchain | `E:\AI\LLM\_work\cuda-toolchain\Library\bin` |
+
+### Daily Monitoring Quick Command
+```powershell
+# HF trending + llama.cpp release + binary age
+curl -s "https://huggingface.co/api/models?other=llama.cpp&sort=trending&limit=3" | ConvertFrom-Json | % id; $r=curl -s "https://api.github.com/repos/ggml-org/llama.cpp/releases/latest"|ConvertFrom-Json; $r.tag_name; Get-Item "E:\AI\LLM\llama.cpp\llama-server.exe"|Select Length,LastWriteTime
+```
+
+### Red Flags
+| Tanda | Action |
+|---|---|
+| Server disconnect mid-use | WDDM timeout / VRAM OOM → turunkan context / fit |
+| Output garbage | Quant terlalu agresif / CUDA 13.2 bug → naikkan quant |
+| `--spec-type mtp` error | Argumen rename ke `draft-mtp` |
+| Build gagal CUDA | Toolchain mismatch → cek CUDA_PATH, cmake flags |
+| Binary tidak jalan (STATUS_DLL_NOT_FOUND) | CUDA bin tidak di PATH → tambah `E:\AI\LLM\_work\cuda-toolchain\Library\bin` |
+| RAM naik terus | Prompt cache aktif → `--cache-ram 0` |
 
 ### Token
 Potongan kata yang model baca sebagai angka. Tokenizer ubah teks → token IDs.
