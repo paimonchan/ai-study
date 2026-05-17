@@ -145,6 +145,76 @@ Untuk MTP head. Sama seperti `--n-cpu-moe` tapi untuk draft model (MTP head). Ef
 | **2** | Turun `-fitt` 3000 → 1500 | **~1.5 GB** | WDDM (rendah) |
 | **3** | Restart llama-server periodik | **Buffer reset** | Downtime 30s |
 | **4** | `--n-cpu-moe N` (kalau perlu) | **~0.5-2 GB VRAM** | **Nambah RAM** ⚠️ |
-| — | Hapus `--no-mmap` | ❌ Nambah RAM | — |
+| — | Hapus `--no-mmap` | ❌ Nambah RAM (Windows) | Issue #14187 |
 | — | `--cache-ram` | ❌ Nambah RAM | — |
 | — | `--mlock` | ❌ Nambah RAM | — |
+
+---
+
+## 10. `GGML_CUDA_NO_PINNED=1` — ⭐ Temuan Paling Menjanjikan
+
+> **Sumber:** GitHub Issue #14187 (Windows), PR #1233, PR #6083, Issue #1533 (ikawrakow fork)
+
+### Apa itu pinned memory?
+llama.cpp secara default menggunakan pinned memory (CUDA_Host buffer) untuk transfer data CPU↔GPU lebih cepat. Di memory breakdown kita:
+
+```
+CUDA_Host model buffer size = ~3238 MiB  ← INI PINNED MEMORY
+```
+
+Pinned memory **tidak bisa di-swap atau di-reclaim** — tetap di RAM fisik.
+
+### Efek GGML_CUDA_NO_PINNED=1
+Pinned memory dialokasikan via `cudaMallocHost`. Dengan env var `GGML_CUDA_NO_PINNED=1`, llama.cpp fallback ke pageable memory biasa.
+
+| Tanpa env var (default) | Dengan `GGML_CUDA_NO_PINNED=1` |
+|---|---|
+| CUDA_Host buffer ~3.2 GB | **Tidak dialokasikan** ✅ |
+| Transfer CPU→GPU lebih cepat | Transfer lebih lambat (teoritis) |
+| Memory tidak bisa di-reclaim | Memory bisa di-swap OS |
+
+### Test:
+```powershell
+$env:GGML_CUDA_NO_PINNED = "1"
+llama-server ...
+```
+
+### Dari GitHub Issue #14187 (Windows specific):
+> *"When mmap = true, layers allocated to GPU still consume system memory on Windows. --no-mmap fixes this. This does NOT affect Linux."*
+
+**Ini konfirmasi: `--no-mmap` + GPU offload adalah pilihan tepat untuk Windows.**
+
+### Dari Issue #1533 (ikawrakow fork):
+> *"GGML_CUDA_NO_PINNED=1 eliminates extra loading time and restores old functionality. Negligible difference for PP compared to older build."*
+
+---
+
+## 11. Windows-Specific Findings
+
+### Issue #14187 — Windows RAM Double Allocation
+| Kondisi | RAM |
+|---|---|
+| `mmap` (default) + GPU offload | **Model di page cache + salinan di RAM** ❌ |
+| `--no-mmap` + GPU offload | Layer GPU dibebaskan dari RAM ✅ |
+
+**Ini alasan kenapa `--no-mmap` benar untuk kita.** Windows tidak behave seperti Linux — mmap menyebabkan double allocation.
+
+---
+
+## 12. Kesimpulan Final — Semua Opsi
+
+| Prioritas | Aksi | Hemat RAM | Risiko | Sumber |
+|---|---|---|---|---|
+| **🟢 1** | Stop OpenCode PID 10708 | **~800 MB** | None | — |
+| **🟢 2** | `$env:GGML_CUDA_NO_PINNED=1` | **~3.2 GB** 🔥 | Speed? (perlu test) | Issue #14187, PR #1233 |
+| **🟢 3** | Stop/restart llama-server | Reset buffer | Downtime 30s | — |
+| **🟡 4** | Turun `-fitt` 3000 → 1500 | **~1.5 GB** | WDDM (rendah) | — |
+| ⚪ 5 | `--n-cpu-moe N` | VRAM, **tambah RAM** | Speed turun | PR #15077 |
+| ❌ | Hapus `--no-mmap` | ❌ Nambah RAM (Windows) | — | Issue #14187 |
+| ❌ | `--cache-ram` / `--mlock` | ❌ Nambah RAM | — | |
+
+### Ringkasan
+1. **`--no-mmap` sudah benar** — Windows butuh ini agar GPU-offloaded layers tidak dobel di RAM
+2. **Pinned memory (`GGML_CUDA_NO_PINNED=1`)** adalah opsi PALING MENJANJIKAN — bisa hemat ~3.2 GB
+3. **Tidak ada magic flag lain** — forum dan GitHub sudah exhausted semua opsi
+4. **Kalau mau hemat lebih:** kurangi `-fitt`, restart periodik, stop OpenCode lama
