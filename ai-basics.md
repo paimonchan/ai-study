@@ -107,9 +107,9 @@ Teknik mempercepat decode dengan cara:
 2. Model besar (target) verify token tersebut dalam 1 batch
 3. Kalau cocok → dapat gratis, kalau tidak → buang dan lanjut
 
-### Analogi
-Tanpa speculative decoding = beli tiap langkah Rp10.000.
-Speculative decoding = bayar Rp10.000 sekali, dapat draf 3 langkah murah, verify 3 token barengan.
+### Analogi: "Discount Decode"
+- Tanpa speculative = tiap token bayar penuh Rp10.000 (40 layer)
+- Speculative = bayar Rp10.000 sekali, dapat tebakan murah ~Rp300 (1 layer), verify barengan
 
 ### Jenis speculative decoding:
 - **MTP** — head built-in di GGUF yang sama (Qwen3.6)
@@ -117,3 +117,31 @@ Speculative decoding = bayar Rp10.000 sekali, dapat draf 3 langkah murah, verify
 - **EAGLE** — drafter berdasarkan hidden state
 - **N-gram** — berdasarkan pola berulang di prompt
 - **Self-speculative** — berdasarkan history token
+
+### MTP Draft: Trade-off Akurasi
+
+MTP draft pakai **1 layer** (bukan 40 layer target) → lebih murah tapi **kurang akurat**.
+
+```
+MTP 1 layer:  akurasi ~60-70%,   biaya ~3% dari target
+Target 40 layer: akurasi ~95%,  biaya 100%
+```
+
+Draft tidak perlu sempurna — cukup lebih baik dari random. Kalau salah, verify akan **reject** dan fallback. Tidak ada output salah.
+
+### MTP Depth
+
+Beberapa model (Qwen3 235B) punya sampai 14 MTP head — bisa nebak sampai 14 token ke depan.
+
+```
+MTP depth 14 = 14 tebakan draft dari 1 hidden state
+```
+
+Tapi makin dalam, makin tidak akurat:
+```
+Token ke-2: akurasi ~70%
+Token ke-5: akurasi ~40%
+Token ke-10: akurasi ~20%
+```
+
+Makanya sweet spot biasanya **1-3 head**. Lebih dari itu, draft sering ditolak dan malah buang waktu.

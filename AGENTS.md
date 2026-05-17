@@ -42,8 +42,8 @@ When doing a deep-dive session, structure the output as:
 
 | File | Topics |
 |---|---|
-| `ai-basics.md` | Token, forward pass, hidden state, lm_head (bukan otak, di-learn), autoregressive, prefill vs decode, speculative decoding |
-| `mtp-basics.md` | MTP architecture, hidden state reuse, verify flow, 2 lm_head, "gratis step" analogi |
+| `ai-basics.md` | Token, forward pass, hidden state, lm_head (bukan otak, di-learn), autoregressive, prefill vs decode, speculative decoding, MTP depth, discount decode |
+| `mtp-basics.md` | MTP architecture, hidden state reuse, verify flow, 2 lm_head, "discount decode", draft accuracy trade-off, MTP depth & diminishing returns |
 | `llamacpp-code.md` | server.cpp structure, MTP state machine, build setup, CUDA toolchain |
 
 ## Maintenance
@@ -82,3 +82,6 @@ Generate token satu per satu — setiap langkah cuma nebak 1 token ke depan, ter
 
 ### Speculative Decoding
 Teknik percepat inference: model kecil generate draft → model besar verify dalam batch.
+
+### MTP (Multi-Token Prediction)
+Variant speculative decoding dengan head built-in di GGUF. Draft pakai 1 layer (bukan target 40 layer) — murah tapi kurang akurat. Trade-off: draft tidak perlu sempurna, cukup lebih baik dari random. MTP depth >3 sering diminishing returns.

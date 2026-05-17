@@ -100,19 +100,71 @@ Step 3: target(40 layer) → token C  ← mahal
 ### Dengan MTP
 ```
 Step 1: target(40 layer) → token A + hidden_state
-Step 2: hidden_state → [MTP block] → h_mtp → lm_head_mtp → token B (draft)
-Step 3: h_mtp → [MTP block] → h_mtp2 → lm_head_mtp2 → token C (draft)
+Step 2: hidden_state → [MTP block 1 layer] → h_mtp → lm_head_mtp → token B (draft)
+Step 3: h_mtp → [MTP block 1 layer] → h_mtp2 → lm_head_mtp2 → token C (draft)
 Step 4: target verify [B, C] ✅✅ dalam 1 batch → dapat 3 token
 
-3 token = 1x forward pass target + beberapa MTP block murah + 1x verify batch
+3 token = 1x forward pass target + 2x MTP murah + 1x verify batch
 ```
 
 MTP masih menggunakan **hidden_state × lm_head**, BUKAN token × lm_head. Bedanya: hidden state diproses dulu lewat transformer block MTP sebelum masuk lm_head MTP.
 
-### Seolah "gratis" langkah tambahan
+### MTP = Discount Decode
+MTP seperti **diskon langkah**: token pertama bayar penuh (40 layer), token selanjutnya diskon karena cuma 1 layer.
+
+```
+Standar: 40 layer/token → mahal
+MTP:     40 layer + (1 layer × MTP_depth) → murah
+```
+
+### MTP Draft Tetap Forward Pass
+Draft MTP tetap lewat forward pass — tapi modelnya **1 layer**, bukan 40 layer target.
+
+```
+Target forward pass: input → L1 → L2 → ... → L40 → hidden_state → token
+MTP forward pass:   hidden_state → [MTP block 1 layer] → h_mtp → lm_head_mtp → token
+```
+
+Bobot MTP sudah ada di file GGUF yang sama, bukan model terpisah.
+
+### Trade-off: Akurasi vs Murah
+
+MTP draft lebih murah karena hanya 1 layer, tapi **kurang akurat**:
+
+```
+MTP 1 layer:    akurasi ~60-70%,   biaya ~3% target
+Target 40 layer: akurasi ~95%,     biaya 100%
+```
+
+Ini trade-off yang menguntungkan karena:
+- Draft tidak perlu sempurna — cukup lebih baik dari random
+- Kalau draft salah → verify reject → fallback → **tidak ada output salah**
+- Selama accept rate > 0, tetap dapat speedup
+
+### MTP Depth
+
+Beberapa model punya lebih dari 1 MTP head (Qwen3 235B: **14 head**).
+
+```
+MTP depth 1: hidden_state → tebak token B
+MTP depth 3: hidden_state → tebak token B, C, D
+MTP depth 14: hidden_state → tebak token B s/d O
+```
+
+Tapi makin dalam, makin tidak akurat:
+```
+Depth 1 (token ke-2):  akurasi ~70%
+Depth 4 (token ke-5):  akurasi ~40%
+Depth 9 (token ke-10): akurasi ~20%
+```
+
+**Sweet spot: 1-3 head.** Lebih dari itu, draft sering ditolak semua dan malah buang waktu.
+
+### "Gratis Langkah" — Efeknya
+
 Dengan MTP, setelah 1x forward pass mahal, kita mendapat beberapa tebakan tambahan dari MTP head yang ringan — seolah-olah model sudah melakukan langkah ke-2, ke-3, dst tanpa bayar penuh.
 
-**Ibaratnya:** 
+**Ibaratnya:**
 - Tanpa MTP = beli tiket Rp10.000 setiap naik bus (3× naik = Rp30.000)
 - MTP = bayar Rp10.000 sekali, dapat tebakan halte berikutnya dari MTP murah, lalu verify 3 halte barengan
 
