@@ -27,28 +27,32 @@ Representasi internal model di suatu layer. Vektor float (misal 2048 angka) yang
 Layer 40 → [0.9, -0.8, 0.2, 0.7, -0.4, ...] ← hidden state
 ```
 
-Hidden state sudah ada sejak awal, bukan fitur MTP. Sebelum MTP, hidden state tidak dipakai setelah lewat `lm_head`.
+Hidden state sudah ada sejak awal (transformer 2017), bukan fitur MTP. Sebelum MTP, hidden state dipakai cuma untuk 1 tebakan token lalu **dibuang** — setiap forward pass menghitung ulang dari awal.
 
 ### Hidden state vs Output
 
 | | Hidden state | Output |
 |---|---|---|
-| Bentuk | Vektor float (2048 angka) | Vektor probabilitas (248320 angka) |
-| Isi | "Pemikiran abstrak" | "Prediksi token selanjutnya" |
+| Bentuk | Vektor float d_model (misal 2048) | Vektor probabilitas vocab_size (misal 248320) |
+| Dimensi | d_model (model-dependent) | vocab_size |
+| Isi | "Pemikiran abstrak" — TIDAK berisi token | Probabilitas setiap token di vocabulary |
 | Bisa dibaca? | Tidak — angka acak | Ya — "def 75%, class 10%" |
 | Dipakai MTP? | Ya | Tidak |
 
 ### Proses dari hidden state ke output
 
 ```
-Layer N → hidden state [0.9, -0.8, ...]
+Layer N → hidden state [0.9, -0.8, ...]   ← 2048 float
               ↓
          lm_head — matriks transformasi (2048 × 248320)
               ↓
-         [0.75, 0.10, 0.08, ...] ← probabilitas setiap token
+         [0.75, 0.10, 0.08, ...]           ← 248320 probabilitas
 ```
 
-`lm_head` adalah "penerjemah" yang mengubah hidden state jadi probabilitas.
+`lm_head` adalah "penerjemah" yang mengubah hidden state jadi probabilitas. lm_head hanya melakukan **dot product** antara hidden state dengan vektor bobot setiap token — tidak ada "pemikiran" di sini.
+
+### Hidden state tidak berisi token
+Hidden state = 2048 angka abstrak (representasi terkompresi). BUKAN berisi 2048/248320 calon token. lm_head-lah yang "mendekompresi" jadi daftar probabilitas untuk seluruh vocabulary.
 
 ---
 
@@ -86,21 +90,31 @@ Model tidak pernah tahu berapa langkah yang dibutuhkan. Setiap langkah cuma miki
 
 ### Tanpa MTP
 ```
-Step 1: target(40 layer) → token A  ← mahal
-Step 2: target(40 layer) → token B  ← mahal
+Step 1: target(40 layer) → token A  ← mahal, hidden_state dibuang
+Step 2: target(40 layer) → token B  ← mahal, hidden_state dibuang
 Step 3: target(40 layer) → token C  ← mahal
 
-3 token = 3x forward pass target
+3 token = 3x forward pass target = 3× mahal
 ```
 
 ### Dengan MTP
 ```
-Step 1: target(40 layer) → token A + hidden state
-Step 2: MTP head(1 layer) → draft [B, C]  ← murah
-Step 3: target verify [B, C] ✅✅ → dapat 3 token
+Step 1: target(40 layer) → token A + hidden_state
+Step 2: hidden_state → [MTP block] → h_mtp → lm_head_mtp → token B (draft)
+Step 3: h_mtp → [MTP block] → h_mtp2 → lm_head_mtp2 → token C (draft)
+Step 4: target verify [B, C] ✅✅ dalam 1 batch → dapat 3 token
 
-3 token = 1x forward pass target + 1x MTP murah
+3 token = 1x forward pass target + beberapa MTP block murah + 1x verify batch
 ```
+
+MTP masih menggunakan **hidden_state × lm_head**, BUKAN token × lm_head. Bedanya: hidden state diproses dulu lewat transformer block MTP sebelum masuk lm_head MTP.
+
+### Seolah "gratis" langkah tambahan
+Dengan MTP, setelah 1x forward pass mahal, kita mendapat beberapa tebakan tambahan dari MTP head yang ringan — seolah-olah model sudah melakukan langkah ke-2, ke-3, dst tanpa bayar penuh.
+
+**Ibaratnya:** 
+- Tanpa MTP = beli tiket Rp10.000 setiap naik bus (3× naik = Rp30.000)
+- MTP = bayar Rp10.000 sekali, dapat tebakan halte berikutnya dari MTP murah, lalu verify 3 halte barengan
 
 ### Verify tetap 40 layer
 Verify adalah forward pass target model **full 40 layer juga**. Bedanya: verify berjalan **parallel** — check 2 draft token dalam 1 forward pass.

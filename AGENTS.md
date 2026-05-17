@@ -42,15 +42,16 @@ When doing a deep-dive session, structure the output as:
 
 | File | Topics |
 |---|---|
-| `ai-basics.md` | Token, forward pass, hidden state, lm_head, autoregressive, prefill vs decode, speculative decoding |
-| `mtp-basics.md` | MTP architecture, hidden state vs output, verify flow, 2 lm_head, efficiency |
+| `ai-basics.md` | Token, forward pass, hidden state, lm_head (bukan otak, di-learn), autoregressive, prefill vs decode, speculative decoding |
+| `mtp-basics.md` | MTP architecture, hidden state reuse, verify flow, 2 lm_head, "gratis step" analogi |
 | `llamacpp-code.md` | server.cpp structure, MTP state machine, build setup, CUDA toolchain |
 
 ## Maintenance
-- Update files when understanding deepens
+- **Update files setiap selesai Q&A session** — review percakapan, tangkap insight baru, perbaiki analogi yang kurang jelas
 - Add cross-references between related topics
 - Review and refine analogies for clarity
-- Commit with descriptive messages: `study: add [topic] Q&A`
+- Pastikan perbedaan dimensi (d_model vs vocab_size, vektor vs token) selalu jelas
+- Commit with descriptive messages: `study: add [topic] Q&A` atau `study: update [topic] — klarifikasi [aspect]`
 
 ## Quick Reference — Key Concepts
 
@@ -71,10 +72,10 @@ Potongan kata yang model baca sebagai angka. Tokenizer ubah teks → token IDs.
 Satu kali proses data dari input ke output melalui semua layer neural network.
 
 ### Hidden State
-Vektor float yang merupakan "pemikiran abstrak" model di suatu layer. Bukan probabilitas.
+Vektor float yang merupakan "pemikiran abstrak" model di suatu layer. Bukan probabilitas. Dimensinya d_model (bukan jumlah token).
 
 ### lm_head
-Fungsi yang mengubah hidden state jadi probabilitas untuk setiap token di vocabulary.
+Matriks proyeksi linear (BUKAN otak) yang memetakan hidden state (d_model) → probabilitas (vocab_size). Bobotnya di-learn saat training, bukan dibuat manual.
 
 ### Autoregressive
 Generate token satu per satu — setiap langkah cuma nebak 1 token ke depan, terus berulang.
