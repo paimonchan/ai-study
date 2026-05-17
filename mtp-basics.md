@@ -1,5 +1,9 @@
 # MTP (Multi-Token Prediction) — Dasar
 
+> **Source code:** `E:\AI\LLM\_work\llama.cpp-upstream-src-tmp\common\speculative.cpp` (baris 380)
+> **Server integration:** `E:\AI\LLM\_work\llama.cpp-upstream-src-tmp\tools\server\server-context.cpp` (baris 785-819)
+> **Clone:** `github.com/ggml-org/llama.cpp` → `E:\AI\LLM\_work\llama.cpp-upstream-src-tmp\`
+
 ## Arsitektur MTP
 
 ### Apa itu token?
@@ -136,18 +140,8 @@ Karena 42 layer = setiap forward pass makin lambat. MTP malah jadi beban. Makany
 
 ---
 
-## Ringkasan Efisiensi
-
-| | Forward pass target | Token per step | Layer ekuivalen |
-|---|---|---|---|
-| Tanpa MTP | 3× | 3 | 120 |
-| Dengan MTP | 1× | 3 | ~41 |
-
-MTP tidak mengurangi jumlah **token output**, tapi mengurangi jumlah **forward pass model besar** dari N kali jadi ~N/3 kali.
-
----
-
-## Alur MTP di Kode
+> **Source:** `E:\AI\LLM\_work\llama.cpp-upstream-src-tmp\common\speculative.cpp` (baris 380)
+> **Server integration:** `E:\AI\LLM\_work\llama.cpp-upstream-src-tmp\tools\server\server-context.cpp` (baris 785-819)
 
 ### Layer arsitektur
 ```

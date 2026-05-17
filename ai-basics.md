@@ -1,5 +1,8 @@
 # AI Inference — Konsep Dasar
 
+> **llama.cpp source:** `E:\AI\LLM\_work\llama.cpp-upstream-src-tmp\`
+> **Build:** `E:\AI\LLM\llama.cpp\llama-server.exe`
+
 ## Token & Tokenizer
 
 Model tidak baca huruf. Tokenizer mengubah teks jadi deretan angka (token) dan sebaliknya.

@@ -1,5 +1,12 @@
 # llama.cpp Code Structure
 
+> **Source code lokal:** `E:\AI\LLM\_work\llama.cpp-upstream-src-tmp\`
+> (clone dari `github.com/ggml-org/llama.cpp`, depth 1, bisa dibaca langsung)
+>
+> **Build directory:** `E:\AI\LLM\_work\llama.cpp-upstream-build-cuda\`
+>
+> **Binary:** `E:\AI\LLM\llama.cpp\llama-server.exe`
+
 ## Server Layer (tools/server/)
 
 | File | Baris | Fungsi |
