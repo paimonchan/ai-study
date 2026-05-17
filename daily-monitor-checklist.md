@@ -68,6 +68,7 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
   - `KV cache compression`, `TurboQuant`, `PolarQuant`
   - `MoE`, `mixture of experts`, `routing`
   - `linear attention`, `state space model`, `Mamba`
+- [ ] **Synthetic data**: teknik baru generate training data (distillation, self-play, augmentation)
 
 ### 7. Speculative Decoding
 - [ ] **MTP updates**: ada improvement baru? (acceptance rate, speed)
@@ -84,6 +85,7 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
   - WDDM stability, TDR fixes
 - [ ] **CMake / Ninja / MSVC**: update toolchain
 - [ ] **Windows Update**: KB yang pengaruhi GPU performa
+- [ ] **Long context techniques**: RoPE scaling, YaRN, positional encoding baru?
 
 ### 9. Benchmark Landscape
 - [ ] **SWE-bench Verified**: https://www.swebench.com/ — SOTA coding
@@ -91,6 +93,8 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
 - [ ] **LiveCodeBench**: coding benchmark terkini
 - [ ] **Aider Polyglot / LLM Leaderboard**: coding comparison
 - [ ] **Artificial Analysis**: https://artificialanalysis.ai — model comparison
+- [ ] **Agent eval**: τ²-bench, AgentBench, BFCL tool calling benchmark
+- [ ] **Multimodal benchmarks**: vision, speech, audio leaderboard
 
 ### 10. Quantization
 - [ ] **MagicQuant v2.0**: hybrid mixed GGUF — pipeline baru
@@ -98,6 +102,7 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
 - [ ] **imatrix**: importance matrix calibration — tooling update
 - [ ] **NVFP4**: Blackwell native FP4 support di llama.cpp/vLLM
 - [ ] **TurboQuant status**: Google Research, ICLR 2026 — official release Q2?
+- [ ] **Model merging**: DARE, TIES, model interpolation — merge fine-tune
 
 ### 11. Agent & Framework
 - [ ] **OpenCode**: https://github.com/anthropics/claude-code — update versi
@@ -110,6 +115,9 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
 - [ ] **LM Studio**: update — GGUF loader, UI improvements
 - [ ] **MCP (Model Context Protocol)**: server baru, tool baru
   - https://github.com/modelcontextprotocol/servers
+- [ ] **Structured output**: JSON mode, GBNF grammar, function calling format baru
+- [ ] **Embedding models**: untuk RAG, retrieval, semantic search
+- [ ] **Vision-Language**: LLaVA, Pixtral, Qwen-VL — multimodal lewat llama.cpp?
 
 ### 12. Forks & Custom Build
 - [ ] **`ikawrakow/ik_llama.cpp`**: https://github.com/ikawrakow/ik_llama.cpp
@@ -186,6 +194,7 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
 - [ ] **Video generation**: Sora, Veo, SANA-WM updates
 - [ ] **Music generation**: new audio models
 - [ ] **Game AI**: procedural generation, NPC behavior models
+- [ ] **Audio/Speech AI**: Whisper, TTS, voice AI — model baru untuk agent pipeline?
 
 ### 23. AI Industry & Business
 - [ ] **Funding rounds**: startup funding, acquisitions
@@ -215,6 +224,7 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
 - [ ] **Cloud GPU**: new instance types (AWS, GCP, Azure)
 - [ ] **Edge AI**: Raspberry Pi AI Kit, NVIDIA Jetson updates
 - [ ] **Storage**: NVMe SSD, RAM, motherboard for AI workstation
+- [ ] **AI energy**: power consumption per model, efisiensi inference per watt
 - [ ] **Cek lisensi model baru**: Apache 2.0? MIT? Llama Community?
 - [ ] **Cek advisories**: CVE untuk llama.cpp / CUDA / driver
 - [ ] **Cek perubahan lisensi**: model yang sebelumnya open-source berubah?
