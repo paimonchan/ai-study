@@ -41,10 +41,11 @@ When doing a deep-dive session, structure the output as:
 ## Topics Covered So Far
 
 | File | Topics |
-|---|---|
+|---|---|---|
 | `ai-basics.md` | Token, forward pass, hidden state, lm_head (bukan otak, di-learn), autoregressive, prefill vs decode, speculative decoding, MTP depth, discount decode |
 | `mtp-basics.md` | MTP architecture, hidden state reuse, verify flow, 2 lm_head, "discount decode", draft accuracy trade-off, MTP depth & diminishing returns |
 | `llamacpp-code.md` | server.cpp structure, MTP state machine, build setup, CUDA toolchain |
+| `inference-engines.md` | Perbandingan engine (llama.cpp, vLLM, SGLang, MLX, TensorRT-LLM), star count, format support, MTP support per engine |
 
 ## Maintenance
 - **Update files setiap selesai Q&A session** — review percakapan, tangkap insight baru, perbaiki analogi yang kurang jelas
@@ -88,3 +89,9 @@ Teknik percepat inference: model kecil generate draft → model besar verify dal
 
 ### MTP (Multi-Token Prediction)
 Variant speculative decoding dengan head built-in di GGUF. Draft pakai 1 layer (bukan target 40 layer) — murah tapi kurang akurat. Trade-off: draft tidak perlu sempurna, cukup lebih baik dari random. MTP depth >3 sering diminishing returns.
+
+### vLLM + MTP + GGUF
+vLLM support MTP (SafeTensors) dan GGUF (experimental), tapi **tidak support MTP dengan GGUF**. MTP butuh arsitektur model asli via HuggingFace. GGUF loader tidak integrated dengan speculative decoding. Tidak ada rencana.
+
+### MLX ≠ Apple-only
+MLX sekarang punya CUDA backend (NVIDIA GPU, Linux/Windows). Tapi MTP di CUDA masih baru — performa terbaik tetap di Apple Silicon.
