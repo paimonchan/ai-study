@@ -133,11 +133,14 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
 ## 🔵 Monthly (1-2 jam) — Evaluasi
 
 ### 13. Model Evaluation
-- [ ] **Download model baru** yang promising dan muat 12GB
-- [ ] **Test speed**: bandingkan t/s dengan Qwen 35B baseline (48 t/s)
-- [ ] **Test quality**: HumanEval subset (20 soal, ~10 menit)
-- [ ] **Test VRAM usage**: nvidia-smi sebelum/sesudah
-- [ ] **Test MTP compatibility**: `--spec-type draft-mtp` berfungsi?
+- [ ] **ByteShape ShapeLearn Qwen3.6 MTP-GGUF** — prioritas deep dive berikutnya
+  - [ ] Download IQ2_S (~9.8 GB) dari https://huggingface.co/byteshape/Qwen3.6-35B-A3B-MTP-GGUF
+  - [ ] Test speed vs Unsloth IQ2_M baseline (83 tok/s)
+  - [ ] Test quality: HumanEval subset (20 soal)
+  - [ ] Test MTP acceptance with `--spec-draft-n-max 2/3/4`
+  - [ ] Test vision mmproj capability
+  - [ ] Test tool calling with OpenCode
+- [ ] **Download model baru lain** yang promising dan muat 12GB
 
 ### 14. Benchmark Ulang
 - [ ] **HumanEval full** (164 soal) — kalau ada perubahan signifikan
