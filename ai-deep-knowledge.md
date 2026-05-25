@@ -540,8 +540,8 @@ llama-tail              # Live log
 ### OpenCode
 ```cmd
 opencode                 # Default (llamacpp-q2)
-opencode -m ollama/gemma4:26b  # Pake Gemma 4
-opencode -m llamacpp-q2        # Pake Qwen MTP
+opencode -m llamacpp-q2        # Pake Qwen MTP (default)
+# opencode -m ollama/gemma4:26b  # Dulu pake Gemma 4 — model removed
 ```
 
 ## 11.2 Paths

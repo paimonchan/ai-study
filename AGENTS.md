@@ -76,8 +76,19 @@ When doing a deep-dive session, structure the output as:
 
 ### Daily Monitoring Quick Command
 ```powershell
-# HF trending + llama.cpp release + binary age
-curl -s "https://huggingface.co/api/models?other=llama.cpp&sort=trending&limit=3" | ConvertFrom-Json | % id; $r=curl -s "https://api.github.com/repos/ggml-org/llama.cpp/releases/latest"|ConvertFrom-Json; $r.tag_name; Get-Item "E:\AI\LLM\llama.cpp\llama-server.exe"|Select Length,LastWriteTime
+# Signal chain: r/LocalLLaMA → Ollama → HF trending → GitHub releases (binary)
+
+# 1. r/LocalLLaMA hot 24h
+curl -s "https://www.reddit.com/r/LocalLLaMA/hot.json?limit=5" | ConvertFrom-Json | % { $_.data.children.data } | Select title, score | Format-Table -AutoSize
+
+# 2. Ollama newest
+curl -sL "https://ollama.com/library?sort=newest" | Select-String -Pattern '<h2[^>]*>(.*?)</h2>' -AllMatches | % { $_.Matches } | Select -First 3 -ExpandProperty Groups | % { $_[1].Value }
+
+# 3. HF trending llama.cpp
+curl -s "https://huggingface.co/api/models?other=llama.cpp&sort=trending&limit=3" | ConvertFrom-Json | % id
+
+# 4. llama.cpp latest release + binary age
+$r=curl -s "https://api.github.com/repos/ggml-org/llama.cpp/releases/latest"|ConvertFrom-Json; $r.tag_name; Get-Item "E:\AI\LLM\llama.cpp\llama-server.exe"|Select Length,LastWriteTime
 ```
 
 ### Red Flags

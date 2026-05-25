@@ -10,14 +10,31 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
 
 ## 🔴 Daily (5-10 menit) — Wajib
 
-### 1. Model Baru (GGUF / llama.cpp)
+**Signal chain:** Reddit (earliest — pre-trending) → Ollama (early availability) → HF Trending (popularity confirmation, 1-2 day delay) → GitHub (binary updates)
+
+### 1. Early Signal — Reddit (2 menit)
+- [ ] **r/LocalLLaMA/new**: https://reddit.com/r/LocalLLaMA/new
+  - Model baru muncul **sebelum** HF trending (1-2 hari lebih cepat)
+  - Cari: MTP, quant, "12GB", "5070", "MoE", GGUF
+  - Benchmark posts dari user hardware mirip
+- [ ] **r/MachineLearning**: https://reddit.com/r/MachineLearning — general ML discussion
+  - Cari: "[D] Research", "[P] Project", "[R] Resource"
+- [ ] **Hacker News / Show HN**: 
+  - Cari: "Show HN: ... model", "GGUF", "llama.cpp", "inference", "local AI", "AI agent"
+
+### 2. Early Availability — Ollama (1 menit)
+- [ ] **Ollama library tags**: https://ollama.com/library?sort=newest
+  - Model baru yang sudah bisa di-pull, mungkin belum trending di HF
+- [ ] **Ollama blog**: https://ollama.com/blog — announcement model baru
+
+### 3. Popularity Signal — HF Trending (2 menit)
 - [ ] **HF trending llama.cpp**: https://huggingface.co/models?other=llama.cpp&sort=trending
   - Cek halaman 1-2, cari model < 15GB
   - Prioritas: MoE 2-5B active, dense < 14B Q4
   - Catat: nama model, size, quant, arsitektur
 - [ ] **HF GGUF trending**: https://huggingface.co/models?library=gguf&sort=trending
 
-### 2. llama.cpp
+### 4. llama.cpp — Binary Updates (1 menit)
 - [ ] **GitHub releases**: https://github.com/ggml-org/llama.cpp/releases
   - Baca release notes — cari: `MTP`, `spec`, `TurboQuant`, `Gemma`, `GGUF`, `KV cache`
   - Perhatian: breaking changes argumen (`mtp` → `draft-mtp`)
@@ -26,25 +43,11 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
   - Filter: `label:performance`, `label:enhancement`
   - Keyword: speculative, quantization, flash attention
 
-### 3. General AI News — Semua Model
+### 5. General AI News — Headlines (1 menit)
 - [ ] **TechCrunch AI**: https://techcrunch.com/category/artificial-intelligence/ — headline hari ini
 - [ ] **VentureBeat AI**: https://venturebeat.com/category/ai/ — industri & funding
-- [ ] **The Verge AI**: https://www.theverge.com/ai-artificial-intelligence — consumer AI
-- [ ] **ArsTechnica AI**: https://arstechnica.com/ai/ — teknis & analysis
 - [ ] **Google AI Blog**: https://ai.googleblog.com/ — research dari Google
 - [ ] **Meta AI Blog**: https://ai.meta.com/blog/ — research dari Meta
-- [ ] **Microsoft Research**: https://www.microsoft.com/en-us/research/topic/artificial-intelligence/ — research dari Microsoft
-
-### 4. Community — Signal
-- [ ] **r/LocalLLaMA**: https://reddit.com/r/LocalLLaMA
-  - Trending posts 24h — cari: MTP, quant, "12GB", "5070", "MoE", GGUF
-  - Benchmark posts dari user hardware mirip
-- [ ] **r/MachineLearning**: https://reddit.com/r/MachineLearning — general ML discussion
-  - Cari: "[D] Research", "[P] Project", "[R] Resource"
-- [ ] **Hacker News / Show HN**: 
-  - Cari: "Show HN: ... model", "GGUF", "llama.cpp", "inference", "local AI", "AI agent"
-- [ ] **Lobsters**: https://lobste.rs/t/ai — AI tag, komunitas dev
-- [ ] **Twitter/X**: follow akun kunci (Karpathy, Ggerganov, Unsloth, dll)
 
 ---
 
@@ -111,7 +114,6 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
   - v0.21.0 (15 Mei) — Gemma4 MTP support!
   - Release notes: model baru, performance
 - [ ] **Ollama**: update versi — support model baru?
-  - Catatan: Gemma 4 di Ollama masih bermasalah
 - [ ] **LM Studio**: update — GGUF loader, UI improvements
 - [ ] **MCP (Model Context Protocol)**: server baru, tool baru
   - https://github.com/modelcontextprotocol/servers
@@ -266,13 +268,17 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
 ```powershell
 # === DAILY ===
 
-# 1. HF trending llama.cpp
+# 1. Early Signal — r/LocalLLaMA 24h hottest posts (skim judul)
+curl -s "https://www.reddit.com/r/LocalLLaMA/hot.json?limit=10" | ConvertFrom-Json | % { $_.data.children.data } | Select title, score, url | Format-Table -AutoSize
+
+# 2. Early Availability — Ollama newest models
+curl -sL "https://ollama.com/library?sort=newest" | Select-String -Pattern '<h2[^>]*>(.*?)</h2>' -AllMatches | % { $_.Matches } | Select -First 10 -ExpandProperty Groups | % { $_[1].Value }
+
+# 3. Popularity Signal — HF trending llama.cpp
 curl -s "https://huggingface.co/api/models?other=llama.cpp&sort=trending&limit=5" | ConvertFrom-Json | Select-Object -ExpandProperty id
 
-# 2. llama.cpp latest release
+# 4. llama.cpp latest release + binary age
 $rel = curl -s "https://api.github.com/repos/ggml-org/llama.cpp/releases/latest" | ConvertFrom-Json; $rel.tag_name, $rel.published_at
-
-# 3. Cek binary kita lawas?
 Get-Item "E:\AI\LLM\llama.cpp\llama-server.exe" | Select-Object Length, LastWriteTime
 
 # === WEEKLY ===
