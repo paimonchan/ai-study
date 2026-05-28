@@ -105,6 +105,10 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
 - [ ] **imatrix**: importance matrix calibration — tooling update
 - [ ] **NVFP4**: Blackwell native FP4 support di llama.cpp/vLLM
 - [ ] **TurboQuant status**: Google Research, ICLR 2026 — official release Q2?
+- [ ] **OSCAR (Together AI)**: 2-bit KV cache quantization, SGLang native — https://github.com/ZunhaiSu/OScaR-KV-Quant
+  - Rilis 25 Mei 2026, MIT license
+  - 8x KV cache reduction, near-lossless di Qwen3-8B (1.42 poin drop)
+  - Pantau: integration ke vLLM → llama.cpp
 - [ ] **Model merging**: DARE, TIES, model interpolation — merge fine-tune
 
 ### 11. Agent & Framework
@@ -133,13 +137,11 @@ Pantau perkembangan AI setiap hari biar tidak ketinggalan informasi penting yang
 ## 🔵 Monthly (1-2 jam) — Evaluasi
 
 ### 13. Model Evaluation
-- [ ] **ByteShape ShapeLearn Qwen3.6 MTP-GGUF** — prioritas deep dive berikutnya
-  - [ ] Download IQ2_S (~9.8 GB) dari https://huggingface.co/byteshape/Qwen3.6-35B-A3B-MTP-GGUF
-  - [ ] Test speed vs Unsloth IQ2_M baseline (83 tok/s)
-  - [ ] Test quality: HumanEval subset (20 soal)
-  - [ ] Test MTP acceptance with `--spec-draft-n-max 2/3/4`
-  - [ ] Test vision mmproj capability
-  - [ ] Test tool calling with OpenCode
+- [ ] **ByteShape ShapeLearn Qwen3.6 MTP-GGUF** — done 27 May 2026
+  - [x] Download IQ2_S (9.33 GB)
+  - [x] Test IQ3_S + IQ4_XS speed & BFCL
+  - [x] IQ4_XS -ncmoe 30 optimal
+  - [ ] HumanEval penuh untuk IQ3_S / IQ4_XS
 - [ ] **Download model baru lain** yang promising dan muat 12GB
 
 ### 14. Benchmark Ulang
